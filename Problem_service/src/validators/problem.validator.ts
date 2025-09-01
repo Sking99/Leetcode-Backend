@@ -4,7 +4,7 @@ export const createProblemSchema = z.object({
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
     difficulty: z.enum(['Easy', 'Medium', 'Hard']),
-    createdAt: z.date().optional(),
+    editorial: z.string().optional(),
     testCases: z.array(z.object({
         input: z.string().min(1, 'Test case input is required'),
         output: z.string().min(1, 'Test case output is required')
