@@ -2,7 +2,7 @@ import { getProblemByID } from "../apis/problem.api";
 import logger from "../config/logger.config";
 import { ISubmission, ISubmissionData, SubmissionStatus } from "../models/submission.model";
 import { addSubmissionJob } from "../producers/submission.producer";
-import { SubmissionRepository } from "../repositories/submission.repository";
+import { ISubmissionRepository } from "../repositories/submission.repository";
 import { BadRequestError, NotFoundError } from "../utils/errors/app.error";
 
 export interface ISubmissionService{
@@ -15,9 +15,9 @@ export interface ISubmissionService{
 
 export class SubmissionService implements ISubmissionService{
 
-    private submissionRepository: SubmissionRepository;
+    private submissionRepository: ISubmissionRepository;
 
-    constructor(submissionRepository: SubmissionRepository){
+    constructor(submissionRepository: ISubmissionRepository){
         this.submissionRepository = submissionRepository;
     }
 
