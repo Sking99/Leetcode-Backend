@@ -7,8 +7,8 @@ import logger from './config/logger.config';
 import { attachCorrelationIdMiddleware } from './middlewares/correlation.middleware';
 import { startWorkers } from './workers/evaluation.worker';
 import { pullAllImages } from './utils/containers/pullImages.util';
-import { createNewDockerContainer } from './utils/containers/createContainer.util';
 import { PYTHON_IMAGE } from './utils/constants';
+import { runCode } from './utils/containers/codeRunner.utils';
 const app = express();
 
 app.use(express.json());
@@ -38,11 +38,23 @@ app.listen(serverConfig.PORT, async () => {
 
     await pullAllImages();
 
-    const container = await createNewDockerContainer({
-        imageName: PYTHON_IMAGE,
-        cmdExecutable: ['echo', 'Hello World'],
-        memoryLimit: 1024 * 1024 * 1024
-    })
-
-    container?.start();
+    await testContainer();    
 });
+
+// For testing purpose
+async function testContainer() {
+    const pythonCode = `
+import time
+i = 0
+while True:
+    i += 1
+    time.sleep(1)
+    print(i)
+`;
+await runCode({
+    code: pythonCode,
+    language: 'python',
+    timeout: 3000,
+    imageName: PYTHON_IMAGE
+})
+}
