@@ -7,8 +7,6 @@ import logger from './config/logger.config';
 import { attachCorrelationIdMiddleware } from './middlewares/correlation.middleware';
 import { startWorkers } from './workers/evaluation.worker';
 import { pullAllImages } from './utils/containers/pullImages.util';
-import { PYTHON_IMAGE } from './utils/constants';
-import { runCode } from './utils/containers/codeRunner.utils';
 const app = express();
 
 app.use(express.json());
@@ -38,20 +36,47 @@ app.listen(serverConfig.PORT, async () => {
 
     await pullAllImages();
 
-    await testContainer();    
+    // await testContainer();  
+    // await testCppCode();  
 });
 
 // For testing purpose
-async function testContainer() {
-    const pythonCode = `
-n = int(input())
-print(n*n)
-`;
-await runCode({
-    code: pythonCode,
-    language: 'python',
-    timeout: 3000,
-    imageName: PYTHON_IMAGE,
-    input: "6"
-})
-}
+// async function testContainer() {
+//     const pythonCode = `
+// n = int(input())
+// print(n*n)
+// `;
+//     await runCode({
+//         code: pythonCode,
+//         language: 'python',
+//         timeout: 3000,
+//         imageName: PYTHON_IMAGE,
+//         input: "6"
+//     })
+// }
+
+// async function testCppCode() {
+//     const cppCode = `
+// #include<iostream>
+
+// int main() {
+//     // std::cout<<"Hello world"<<std::endl;
+//     int n;
+//     std::cin>>n;
+
+//     for(int i = 0; i < n; i++) {
+//         std::cout<<i<<std::endl;
+//     }
+
+//     return 0;
+// }
+    
+// `
+//     await runCode({
+//         code: cppCode,
+//         language: "cpp",
+//         timeout: 1000,
+//         imageName: CPP_IMAGE,
+//         input: "6"
+//     })
+// }
