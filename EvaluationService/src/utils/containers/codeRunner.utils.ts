@@ -9,11 +9,12 @@ export interface RunCodeOptions {
     language: 'python' | 'cpp',
     timeout: number, // in ms
     imageName: string,
+    input: string
 }
 
 export async function runCode(options: RunCodeOptions) {
 
-    const { code, language, timeout, imageName } = options;
+    const { code, language, timeout, imageName, input } = options;
 
     if(!allowedLanguagesList.includes(language)) {
         throw new InternalServerError('Language not supported');
@@ -21,7 +22,7 @@ export async function runCode(options: RunCodeOptions) {
 
     const container = await createNewDockerContainer({
         imageName: imageName,
-        cmdExecutable: command[language](code),
+        cmdExecutable: command[language](code, input),
         memoryLimit: 1024 * 1024 * 1024
     })
 

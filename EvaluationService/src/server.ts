@@ -44,17 +44,14 @@ app.listen(serverConfig.PORT, async () => {
 // For testing purpose
 async function testContainer() {
     const pythonCode = `
-import time
-i = 0
-while True:
-    i += 1
-    time.sleep(1)
-    print(i)
+n = int(input())
+print(n*n)
 `;
 await runCode({
     code: pythonCode,
     language: 'python',
     timeout: 3000,
-    imageName: PYTHON_IMAGE
+    imageName: PYTHON_IMAGE,
+    input: "6"
 })
 }
